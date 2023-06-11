@@ -1,5 +1,5 @@
 {
-  "name": "@swyger/client",
+  "name": "@swyger/client-database",
   "version": "0.1.0",
   "description": "Swyger Database Client JS library is used for Swyger Server as consumer Rest API for CRUD operation in realtime! Visit the master branch: https://github.com/coorise/swyger-js-client-database.git",
   "type": "module",
