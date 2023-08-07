@@ -15,10 +15,6 @@ const AxiosService={
       if(accessToken) headers['Authorization']='Bearer '+accessToken
       const url=path
 
-      if(typeof data?.get=='function' && data?.get('file')){
-        //https://stackoverflow.com/questions/43013858/how-to-post-a-file-from-a-form-with-axios
-        headers['Content-Type']='multipart/form-data'
-      }
       if(args?.headers){
         headers=Object.assign(
             ...headers,
