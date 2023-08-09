@@ -9,17 +9,9 @@ import {authRoute, crudRoute, databaseRoute, listenRoute} from './api-route.js'
 class SwygerClient{
   #listen='/on'
   #requireAuth=true
-
   #redirectTo
-
   #extrasRef
-
-  #storage
-  #basePath
-  #storageConfig
-  #mail
   #eventEmitter=new EventEmitter()
-
   #syncWithLocal
   #dataBaseConnected
   #config
@@ -628,9 +620,7 @@ class SwygerClient{
     }
     let event=(path,socket)=>{
       let ref='%'+path
-      let parent=this.init(req)
-      delete parent.auth().login
-      delete parent.auth().register
+      let parent=this.init(req).database()
       return {
         private:(id=generateQuickGuid())=>{
           return parent.event(path + id)
@@ -638,15 +628,15 @@ class SwygerClient{
         child:(childPath)=>{
           return parent.event(path + childPath)
         },
-        emit:(data,callback)=>{
+        push:(data,callback)=>{
           socket?.emit(ref,data)
-          if(typeof callback=='function') parent.event(path).do(callback)
+          if(typeof callback=='function') parent.event(path).onValue(callback)
           return {
             ...parent.event(path),
             ...parent
           }
         },
-        do:(callback)=>{
+        onValue:(callback)=>{
           socket?.on(ref,(result)=>{
             if(typeof callback=='function')
               callback({
@@ -660,7 +650,7 @@ class SwygerClient{
             ...parent
           }
         },
-        onAny:(callback)=>{
+        onAnyValue:(callback)=>{
           socket?.onAny((eventName,args)=>{
 
             if(typeof callback =='function') callback(
@@ -1143,9 +1133,9 @@ class SwygerClient{
               ...parent
             }
             let listen = parent.ref(path, config, socket)
-            listen?.on().create(callback)
-            listen?.on().update(callback)
-            listen?.on().delete(callback)
+            listen?.on()?.create(callback)
+            listen?.on()?.update(callback)
+            listen?.on()?.delete(callback)
             return node
           }
         }
