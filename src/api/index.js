@@ -620,7 +620,7 @@ class SwygerClient{
     }
     let event=(path,socket)=>{
       let ref='%'+path
-      let parent=this.init(req).database()
+      let parent=this.init(req)?.database()
       return {
         private:(id=generateQuickGuid())=>{
           return parent.event(path + id)
